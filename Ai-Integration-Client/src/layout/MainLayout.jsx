@@ -8,7 +8,7 @@ function MainLayout() {
             <section>
                 <Navbar />
             </section>
-            <section className="min-h-[70vh]">
+            <section className="min-h-[70vh] container mx-auto">
                 <Outlet />
             </section>
             <section>
