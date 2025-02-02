@@ -4,8 +4,8 @@ import { FaFacebook, FaTwitter, FaYoutube } from 'react-icons/fa'
 
 function Footer() {
     return (
-        <section className="container mx-auto">
-            <section className="footer sm:footer-horizontal bg-neutral text-neutral-content p-10">
+        <section className="bg-neutral w-full">
+            <section className="container mx-auto footer sm:footer-horizontal text-neutral-content p-10">
                 <aside>
                     <Link to='/'>
                         <img className="w-16" src={logo} alt="AI Logo" />
