@@ -37,6 +37,18 @@ async function run() {
       res.send({response : result.response.text()})
     })
 
+    // AI Response;
+    app.get('/ai-res', async (req, res) => {
+      const {prompt} = req.query;
+      const result = await model.generateContent(prompt);
+      console.log(result.response.text())
+      res.send({response : result.response.text()})
+      // res.send({response: `Lorem, ipsum dolor sit amet consectetur aisquam nu Lorem, ipsum dolor sit amet consectetur aisquam nu Lorem, ipsum dolor sit amet consectetur aisquam nu Lorem, ipsum dolor sit amet consectetur aisquam nu Lorem, ipsum dolor sit amet consectetur aisquam nu Lorem, ipsum dolor sit amet consectetur aisquam nuLorem, ipsum dolor sit amet consectetur aisquam nu`})
+      // res.send({response: `Lorem`})
+      // res.send({response: `Lorem`})
+      // give me a raw markdown file with out this - (```markdown......````)
+    })
+
   } finally {
 
   }

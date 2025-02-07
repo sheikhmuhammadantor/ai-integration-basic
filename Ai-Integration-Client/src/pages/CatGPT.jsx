@@ -1,26 +1,37 @@
 import { useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
+import useAxiosPublic from "../hook/useAxiosPublic";
+import MarkDownComponent from "../hook/MarkDownComponent";
 
-export default function ChatHomePage() {
+export default function CarGPT() {
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState([]);
+    const axiosPublic = useAxiosPublic();
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (input.trim() === "") return;
-        setMessages([...messages, { text: input, sender: "ai" }]);
+        setMessages((previous) => [...previous, { text: input, sender: "user" }]);
         setInput("");
 
+        try {
+            const res = await axiosPublic('/ai-res', {
+                params: { prompt: input }
+            });
+            console.log(res.data.response);
+            setMessages((previous) => [...previous, { text: res?.data?.response, sender: "ai" }]);
+        } catch (error) {
+            console.log('error', error)
+        }
     };
-
     return (
-        <div className="flex flex-col h-[70%] bg-gray-900 text-white">
+        <div className="bg-gray-900 text-white min">
             {/* Header */}
             <div className="p-4 text-center text-xl font-bold bg-gray-800">
-                Chat With AI
+                Chat With Cat
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 overflow-y-auto p-4 gap-3">
+            <div className="p-4 gap-3 h-[70vh] overflow-auto">
                 {messages.length === 0 ? (
                     <div className="text-center text-gray-400 mt-20">
                         Ask anything...
@@ -29,10 +40,11 @@ export default function ChatHomePage() {
                     messages.map((msg, index) => (
                         <div
                             key={index}
-                            className={`my-2 p-3 rounded-lg md:max-w-[45%] md:w-fit w-11/12 bg-gray-700 ${msg.sender === "user" ? "ml-auto" : "mr-auto"
+                            className={`my-2 p-3 rounded-lg md:max-w-[45%] md:w-fit w-fit max-w-11/12 overflow-auto ${msg.sender === "user" ? "ml-auto bg-blue-800/50" : "mr-auto bg-gray-700"
                                 }`}
                         >
-                            {msg.text}
+                            {/* {msg.text} */}
+                            <MarkDownComponent markdownText={msg.text}/>
                         </div>
                     ))
                 )}
@@ -48,6 +60,7 @@ export default function ChatHomePage() {
                     placeholder="Ask me anything..."
                 />
                 <button
+                    type="button"
                     onClick={handleSend}
                     className="p-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition"
                 >
